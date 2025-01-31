@@ -1,11 +1,11 @@
 {
-  "name": "s84_what_if",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "A detailed description of the s84_what_if project and its purpose",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": "Backend service for the application"
 }
