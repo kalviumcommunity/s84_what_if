@@ -3,7 +3,7 @@ const app= express();
 PORT = 3000
 
 app.get("/ping", (req, res)=>{
-    res.send("Hlo..!");
+    res.status(200).send("Hlo..!");
 })
 
 app.listen(PORT, ()=>
