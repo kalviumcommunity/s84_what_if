@@ -2,7 +2,7 @@ const express= require("express");
 const app= express();
 PORT = 3000
 
-app.get("/", (req, res)=>{
+app.get("/ping", (req, res)=>{
     res.send("Hlo..!");
 })
 
