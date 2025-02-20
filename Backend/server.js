@@ -1,6 +1,11 @@
 const express= require("express");
 const app= express();
-PORT = 3000
+
+
+require('dotenv').config();
+const mongoose = require('./Models/db');
+
+PORT = process.env.PORT || 3000
 
 app.get("/ping", (req, res)=>{
     res.status(200).send("Hlo..!");
