@@ -1,12 +1,17 @@
 const express= require("express");
 const app= express();
-const user = require('./Routes/routes')
+const cors = require('cors');
+const user = require('./Routes/userRoutes')
+const posts = require('./Routes/postRoutes')
+app.use(cors())
 
 app.use('/user', user)
+app.use('/posts', posts)
 
 
 require('dotenv').config();
 const mongoose = require('./Models/db');
+const router = require("./Routes/postRoutes");
 
 PORT = process.env.PORT || 3000
 
