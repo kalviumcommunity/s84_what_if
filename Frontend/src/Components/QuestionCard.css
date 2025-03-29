@@ -1,0 +1,60 @@
+/* Card Styles */
+.question-card {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px; /* Softer rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    overflow: hidden;
+  }
+  
+  .question-card:hover {
+    transform: translateY(-10px); /* Lift the card slightly on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  .question-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.8rem;
+    color: #34495e; /* Subtle dark text */
+  }
+  
+  .question-card p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #7f8c8d; /* Muted text for secondary information */
+  }
+  
+  .question-card p strong {
+    color: #2c3e50; /* Highlighted category label */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .question-card {
+      padding: 1rem;
+    }
+  
+    .question-card h3 {
+      font-size: 1.1rem;
+    }
+  
+    .question-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .question-card {
+      padding: 0.8rem;
+    }
+  
+    .question-card h3 {
+      font-size: 1rem;
+    }
+  
+    .question-card p {
+      font-size: 0.85rem;
+    }
+  }

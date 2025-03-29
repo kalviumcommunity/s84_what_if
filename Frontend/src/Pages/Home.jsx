@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./landing.css";
 import Card from "../Components/Card";
 import axios from "axios";
@@ -6,18 +7,20 @@ import axios from "axios";
 const Home = () => {
   const [post, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
     category: "",
   });
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
   // Fetch posts from the backend
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/posts");
-      setPosts(response.data.data); // Assuming the backend returns posts in `data.data`
+      const response = await axios.get("http://localhost:9080/posts");
+      setPosts(response.data.data);
     } catch (err) {
       console.error("Error fetching posts:", err);
       setError("Failed to fetch posts");
@@ -35,9 +38,9 @@ const Home = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8000/posts", formData);
-      setFormData({ question: "", answer: "", category: "" }); // Reset form
-      setIsModalOpen(false); // Close modal
-      fetchPosts(); // Refresh posts
+      setFormData({ question: "", answer: "", category: "" });
+      setIsModalOpen(false);
+      fetchPosts();
     } catch (err) {
       console.error("Error adding post:", err);
     }
@@ -56,11 +59,16 @@ const Home = () => {
           <div className="cta-buttons">
             <button
               className="post-idea-btn"
-              onClick={() => setIsModalOpen(true)} // Open modal
+              onClick={() => setIsModalOpen(true)}
             >
               Post Your Idea
             </button>
-            <button className="randomizer-btn">Explore Random Ideas</button>
+            <button
+              className="randomizer-btn"
+              onClick={() => navigate("/explore")} // Navigate to Explore page
+            >
+              Explore Random Ideas
+            </button>
           </div>
         </div>
       </section>
@@ -128,6 +136,8 @@ const Home = () => {
           </div>
         </div>
       )}
+
+      
     </div>
   );
 };
