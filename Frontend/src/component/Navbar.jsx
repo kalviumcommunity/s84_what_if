@@ -1,22 +1,24 @@
-// Navbar.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import React from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import "./Navbar.css";
 
 export const Navbar = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-logo">
-          <h1>What  if..?</h1>
-        </div>
-
-        <div className="navbar-links">
-          <Link to="/" className="navbar-link">Home</Link>
-          <Link to="/explore" className="navbar-link">Explore</Link>
-          <Link to="/new-product" className="navbar-link">Add Scenario</Link>
-        </div>
+    <header className="header">
+      <div className="logo">
+        <Link to="/" style={{color: 'white', fontStyle: 'Arial', fontWeight: 'bold', fontSize: '1.5 rem'}}>What If...?</Link> {/* Link to Home */}
       </div>
-    </nav>
+      <nav className="nav">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/categories" className="nav-link">Categories</Link>
+        <Link to="/story-time" className="nav-link">Story Time</Link>
+        <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
+        <Link to="/battle-royale" className="nav-link">Battle Royale</Link>
+      </nav>
+      <div className="user-avatar">
+        <img src="avatar.png" alt="User Avatar" />
+      </div>
+      <button className="login-btn">Login/Signup</button>
+    </header>
   );
 };

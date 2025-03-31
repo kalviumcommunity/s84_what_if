@@ -13,6 +13,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global styles to eliminate horizontal scrolling */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit; /* Ensure consistent box-sizing across all elements */
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -25,9 +37,11 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column; /* Ensure content stacks vertically */
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 h1 {

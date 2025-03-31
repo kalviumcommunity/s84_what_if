@@ -1,45 +1,145 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import "./landing.css";
+import Card from "../component/Card";
+import Modal from "../component/Modal";
 
-export default function Home() {
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/posts");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPosts(data.posts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleModalSubmit = () => {
+    // Refresh posts after adding a new one
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/posts");
+        const data = await response.json();
+        setPosts(data.posts);
+
+        // Show success message
+        setSuccessMessage("Post added successfully!");
+        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  };
+
   return (
-    <div className="landing-container">
-      <motion.h1
-        className="landing-title"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-      >
-        Welcome to What If...?
-      </motion.h1>
-      <motion.p
-        className="landing-description"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 0.5 }}
-      >
-        A creative space to let your wildest, funniest, and most thought-provoking ideas come to life! Share your random thoughts, engage with like-minded individuals, and explore endless "What If" scenarios.
-      </motion.p>
-      
-      <motion.button
-        className="explore-button"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 1 }}
-      >
-        Start Exploring
-      </motion.button>
+    <div className="home">
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1>Where your wildest 'What If' ideas come to life!</h1>
+          <div className="cta-buttons">
+            <button
+              className="post-idea-btn"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Post Your Idea
+            </button>
+            <button
+              className="randomizer-btn"
+              onClick={() => navigate("/explore")} // Redirect to Explore page
+            >
+              Explore Random Ideas
+            </button>
+          </div>
+        </div>
+      </section>
 
-      <div className="footer-text">
-        <motion.p
-          className="footer-description"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 1.5 }}
-        >
-          Join the community of dreamers, thinkers, and creators.
-        </motion.p>
-      </div>
+      {/* Success Message */}
+      {successMessage && (
+        <div className="success-message">
+          {successMessage}
+        </div>
+      )}
+
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleModalSubmit}
+      />
+
+      {/* Featured Posts */}
+      <section className="featured-posts">
+        <h2>Trending What If Ideas</h2>
+        <div className="post-scroll">
+          {posts.length > 0 ? (
+            posts.slice(0, 3).map((post, index) => (
+              <Card key={index} question={post.question} answer={post.answer} />
+            ))
+          ) : (
+            <p>Loading posts...</p>
+          )}
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="categories">
+        <h2>Explore Categories</h2>
+        <div className="category-grid">
+          <div className="category-card">
+            <span>👽</span>
+            <p>Sci-fi</p>
+          </div>
+          <div className="category-card">
+            <span>😈</span>
+            <p>Dark Humor</p>
+          </div>
+          <div className="category-card">
+            <span>🏠</span>
+            <p>Everyday Life</p>
+          </div>
+          <div className="category-card">
+            <span>🤔</span>
+            <p>Existential Crises</p>
+          </div>
+          <div className="category-card">
+            <span>🐉</span>
+            <p>Fantasy</p>
+          </div>
+          <div className="category-card">
+            <span>🤖</span>
+            <p>Technology</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="social-media">
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+        </div>
+        <p>About Us | Contact</p>
+      </footer>
     </div>
-  )
-}
+  );
+};
+
+export default Home;

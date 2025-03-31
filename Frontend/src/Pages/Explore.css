@@ -1,0 +1,32 @@
+/* Explore page container */
+.explore-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto; /* Center the page content */
+    text-align: center; /* Center-align the title */
+  }
+  
+  /* Page title */
+  .explore-page h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-transform: uppercase; /* Make the title uppercase */
+    letter-spacing: 1px; /* Add spacing between letters */
+  }
+  
+  /* Card container */
+  .post-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 30px; /* Space between cards */
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* Loading message */
+  .post-list p {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
+  }

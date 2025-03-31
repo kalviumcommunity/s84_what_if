@@ -1,0 +1,53 @@
+/* Card container styles */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 30px; /* Space between cards */
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Card styles */
+.card {
+  background: linear-gradient(135deg, #2c3e50, #34495e); /* Dark gradient background */
+  border: none; /* Remove border */
+  border-radius: 12px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.card:hover {
+  transform: translateY(-6px); /* Slight lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+/* Question styles */
+.card-question {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f1c40f; /* Vibrant yellow for visibility */
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Add subtle text shadow */
+}
+
+/* Answer styles */
+.card-answer {
+  font-size: 1.1rem;
+  color: #ecf0f1; /* Light gray for readability */
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* Category styles */
+.card-category {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ffffff; /* White text for contrast */
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 10px;
+}
