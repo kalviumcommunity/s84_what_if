@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Card from "../component/Card"; // Import the Card component
-import "./Explore.css"; // Optional: Add specific styles for the Explore page
+import Card from "../component/Card";
+import "./Explore.css";
+
+const port = import.meta.env.Port;
+
 
 export default function Explore() {
-  const [posts, setPosts] = useState([]); // State to store posts
+  const [posts, setPosts] = useState([]);
 
   // Fetch data from the backend
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/posts"); // Replace with your backend URL
+        const response = await fetch(`http://localhost:${port}/posts`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setPosts(data.posts); // Update the state with fetched posts
+        setPosts(data.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }

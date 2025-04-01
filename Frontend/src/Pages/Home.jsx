@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import "./landing.css";
 import Card from "../component/Card";
 import Modal from "../component/Modal";
 
+
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
+
+  const port = import.meta.env.Port;
 
   // Fetch data from backend
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/posts");
+        const response = await fetch(`http://localhost:${port}/posts`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -29,16 +32,16 @@ const Home = () => {
   }, []);
 
   const handleModalSubmit = () => {
-    // Refresh posts after adding a new one
+    
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/posts");
+        const response = await fetch(`http://localhost:${port}/posts`);
         const data = await response.json();
         setPosts(data.posts);
 
-        // Show success message
+        
         setSuccessMessage("Post added successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+        setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -62,7 +65,7 @@ const Home = () => {
             </button>
             <button
               className="randomizer-btn"
-              onClick={() => navigate("/explore")} // Redirect to Explore page
+              onClick={() => navigate("/explore")}
             >
               Explore Random Ideas
             </button>
