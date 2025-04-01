@@ -11,7 +11,7 @@ const Home = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const port = import.meta.env.Port;
+  const port = import.meta.env.VITE_PORT;
 
   // Fetch data from backend
   useEffect(() => {

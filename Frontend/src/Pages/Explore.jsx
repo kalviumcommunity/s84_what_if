@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../component/Card";
 import "./Explore.css";
 
-const port = import.meta.env.Port;
+const port = import.meta.env.VITE_PORT;
 
 
 export default function Explore() {

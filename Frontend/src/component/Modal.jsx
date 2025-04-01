@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
-const port = import.meta.env.Port;
+const port = import.meta.env.VITE_PORT;
 
 
 const Modal = ({ isOpen, onClose, onSubmit }) => {
