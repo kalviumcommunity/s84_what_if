@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 export const Navbar = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/" style={{color: 'white', fontStyle: 'Arial', fontWeight: 'bold', fontSize: '1.5 rem'}}>What If...?</Link> {/* Link to Home */}
+        <Link to="/" style={{color: 'white', fontStyle: 'Arial', fontWeight: 'bold', fontSize: '1.5 rem'}}>What If...?</Link>
       </div>
       <nav className="nav">
         <Link to="/" className="nav-link">Home</Link>

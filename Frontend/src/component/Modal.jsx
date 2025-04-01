@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
+const port = import.meta.env.Port;
+
+
 const Modal = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     question: "",
@@ -16,7 +19,7 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/posts", {
+      const response = await fetch(`http://localhost:${port}/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,9 +30,9 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
       if (response.ok) {
         const data = await response.json();
         console.log("Post added successfully:", data);
-        onSubmit(); // Callback to refresh data or handle success
-        setFormData({ question: "", answer: "", category: "" }); // Clear form data
-        onClose(); // Close the modal
+        onSubmit();
+        setFormData({ question: "", answer: "", category: "" });
+        onClose();
       } else {
         console.error("Failed to add post");
       }
@@ -39,8 +42,8 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleCancel = () => {
-    setFormData({ question: "", answer: "", category: "" }); // Clear form data
-    onClose(); // Close the modal
+    setFormData({ question: "", answer: "", category: "" });
+    onClose();
   };
 
   if (!isOpen) return null;
