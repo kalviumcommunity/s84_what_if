@@ -4,7 +4,6 @@ import "./landing.css";
 import Card from "../component/Card";
 import Modal from "../component/Modal";
 
-
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,39 +14,68 @@ const Home = () => {
 
   // Fetch data from backend
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:${port}/posts`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPosts(data.posts);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
-  const handleModalSubmit = () => {
-    
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:${port}/posts`);
-        const data = await response.json();
-        setPosts(data.posts);
-
-        
-        setSuccessMessage("Post added successfully!");
-        setTimeout(() => setSuccessMessage(""), 3000);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost:${port}/posts`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
+      const data = await response.json();
+      setPosts(data.posts);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  const handleModalSubmit = () => {
     fetchData();
+    setSuccessMessage("Post added successfully!");
+    setTimeout(() => setSuccessMessage(""), 3000);
+  };
+
+  const handleDeletePost = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      setPosts(posts.filter(post => post._id !== id));
+      setSuccessMessage("Post deleted successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const handleUpdatePost = async (id, updatedPost) => {
+    try {
+      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPost),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      setPosts(posts.map(post => 
+        post._id === id ? { ...post, ...updatedPost } : post
+      ));
+      setSuccessMessage("Post updated successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
   };
 
   return (
@@ -92,8 +120,16 @@ const Home = () => {
         <h2>Trending What If Ideas</h2>
         <div className="post-scroll">
           {posts.length > 0 ? (
-            posts.slice(0, 3).map((post, index) => (
-              <Card key={index} question={post.question} answer={post.answer} />
+            posts.slice(0, 3).map((post) => (
+              <Card 
+                key={post._id} 
+                id={post._id}
+                question={post.question} 
+                answer={post.answer}
+                category={post.category}
+                onDelete={handleDeletePost}
+                onUpdate={handleUpdatePost}
+              />
             ))
           ) : (
             <p>Loading posts...</p>
