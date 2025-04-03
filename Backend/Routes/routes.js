@@ -1,8 +1,9 @@
-const express = require('express')
-const router = express.Router()
-router.use(express.json())
+const express = require('express');
+const router = express.Router();
+router.use(express.json());
 
 const User = require('../Models/schema');
+const Post = require('../Models/postSchema'); 
 
 router.get('/', async (req, res)=>{
     try{
@@ -29,27 +30,32 @@ router.post('/', async (req, res)=>{
     }
 })
 
-router.put('/:id', async (req, res)=>{
-    try{
-        const {id} = req.params;
-        const {username, animalIdentity, password, joinDate,postCount,reputation } = req.body;
-        const updateuser = await User.findByIdAndUpdate(id ,{username, animalIdentity, password, joinDate, postCount, reputation},{new : true});
-        res.status(200).json({ msg : "Data updated successfully", success : true, user: updateuser});
+router.delete('/posts/:id', async (req, res) => {
+    try {
+        const deletedPost = await Post.findByIdAndDelete(req.params.id);
+        if (!deletedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json({ message: 'Post deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    catch(err){
-        res.status(500).json({ error: 'Server error', success: false });
-    }
-})
+});
 
-router.delete('/:id', async (req, res)=>{
-    try{
-        const id = req.params.id;
-        const data= await User.findByIdAndDelete(id);
-        res.status(200).json({ msg : "Data deleted", success : true});
+router.put('/posts/:id', async (req, res) => {
+    try {
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        res.json({ post: updatedPost, message: 'Post updated successfully' });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
-    catch(err){
-        res.status(500).json({ error: 'Server error', success: false });
-    }
-})
+});
 
-module.exports = router
+module.exports = router;
