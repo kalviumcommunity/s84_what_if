@@ -4,7 +4,6 @@ import "./Explore.css";
 
 const port = import.meta.env.VITE_PORT;
 
-
 export default function Explore() {
   const [posts, setPosts] = useState([]);
 
@@ -26,17 +25,28 @@ export default function Explore() {
     fetchPosts();
   }, []);
 
+  const handleDelete = (id) => {
+    setPosts(posts.filter((post) => post._id !== id));
+  };
+
+  const handleUpdate = (id, updatedPost) => {
+    setPosts(posts.map((post) => (post._id === id ? { ...post, ...updatedPost } : post)));
+  };
+
   return (
     <div className="explore-page">
       <h1>Explore All Ideas</h1>
       <div className="post-list">
         {posts.length > 0 ? (
-          posts.map((post, index) => (
+          posts.map((post) => (
             <Card
-              key={index}
+              key={post._id}
+              id={post._id}
               question={post.question}
               answer={post.answer}
               category={post.category}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
             />
           ))
         ) : (

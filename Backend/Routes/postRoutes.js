@@ -34,4 +34,50 @@ router.get("/", async (req, res) => {
   }
 });
 
+// DELETE /posts/:id - Delete a post by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "Post ID is required", success: false });
+    }
+
+    const deletedPost = await Post.findByIdAndDelete(id);
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found", success: false });
+    }
+    res.status(200).json({ message: "Post deleted successfully", success: true });
+  } catch (err) {
+    console.error("Error deleting post:", err);
+    res.status(500).json({ error: "Server error", success: false });
+  }
+});
+
+// PUT /posts/:id - Update a post by ID
+router.put("/:id", async (req, res) => {
+  try {
+    const { question, answer, category } = req.body;
+
+    // Validate input
+    if (!question || !answer || !category) {
+      return res.status(400).json({ error: "Missing required fields", success: false });
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      { question, answer, category },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found", success: false });
+    }
+
+    res.status(200).json({ message: "Post updated successfully", post: updatedPost, success: true });
+  } catch (err) {
+    console.error("Error updating post:", err);
+    res.status(500).json({ error: "Server error", success: false });
+  }
+});
+
 module.exports = router;

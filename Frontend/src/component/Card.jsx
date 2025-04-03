@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './Card.css';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
+const port = import.meta.env.VITE_PORT;
+
 export default function Card({ 
   question, 
   answer, 
@@ -15,13 +17,46 @@ export default function Card({
   const [editedAnswer, setEditedAnswer] = useState(answer);
   const [editedCategory, setEditedCategory] = useState(category);
 
-  const handleUpdate = () => {
-    onUpdate(id, {
-      question: editedQuestion,
-      answer: editedAnswer,
-      category: editedCategory
-    });
-    setIsEditing(false);
+  const handleUpdate = async () => {
+    try {
+      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: editedQuestion,
+          answer: editedAnswer,
+          category: editedCategory,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      onUpdate(id, data.post);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      onDelete(id);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -44,13 +79,12 @@ export default function Card({
             <img src='https://img.icons8.com/ios_filled/512/FFFFFF/edit.png' style={{height : "20px", width : "20px"}}/>
           </button>
           <button 
-            onClick={() => onDelete(id)} 
+            onClick={handleDelete} 
             className="card-action-btn"
             aria-label="Delete card"
           >
             <FiTrash2 className="card-icon" />
             <img src='https://img.icons8.com/ios11/600/FFFFFF/filled-trash.png' style={{height : "20px", width : "20px"}}/>
-            
           </button>
         </div>
       )}

@@ -38,45 +38,46 @@ const Home = () => {
 
   const handleDeletePost = async (id) => {
     try {
-      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
-        method: 'DELETE',
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      setPosts(posts.filter(post => post._id !== id));
-      setSuccessMessage("Post deleted successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
+        const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        setPosts(posts.filter(post => post._id !== id));
+        setSuccessMessage("Post deleted successfully!");
+        setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
-      console.error("Error deleting post:", error);
+        console.error("Error deleting post:", error);
     }
-  };
+};
 
   const handleUpdatePost = async (id, updatedPost) => {
     try {
-      const response = await fetch(`http://localhost:${port}/posts/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedPost),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      setPosts(posts.map(post => 
-        post._id === id ? { ...post, ...updatedPost } : post
-      ));
-      setSuccessMessage("Post updated successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
+        const response = await fetch(`http://localhost:${port}/posts/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedPost),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setPosts(posts.map(post =>
+            post._id === id ? { ...post, ...data.post } : post
+        ));
+        setSuccessMessage("Post updated successfully!");
+        setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
-      console.error("Error updating post:", error);
+        console.error("Error updating post:", error);
     }
-  };
+};
 
   return (
     <div className="home">
